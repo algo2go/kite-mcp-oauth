@@ -43,10 +43,11 @@ func TestAuthCodeStore_CleanupGoroutineDone(t *testing.T) {
 // (we test the cleanup logic, not the goroutine timing).
 func TestAuthCodeStore_CleanupTickerPath(t *testing.T) {
 	t.Parallel()
-	// Create store without starting cleanup goroutine
+	// Create store without starting cleanup goroutine. done channel
+	// intentionally omitted — this test simulates the ticker-arm logic
+	// inline, so the done channel is never consumed (dead write).
 	store := &AuthCodeStore{
 		entries: make(map[string]*AuthCodeEntry),
-		done:    make(chan struct{}),
 	}
 
 	// Add expired and valid entries

@@ -159,9 +159,11 @@ func TestValidateToken_WrongKey_Push100(t *testing.T) {
 func TestAuthCodeStore_CleanupLogic_Push100(t *testing.T) {
 	t.Parallel()
 
+	// done channel intentionally omitted — this test simulates the
+	// ticker-arm logic inline without starting the cleanup goroutine,
+	// so the done channel is never consumed.
 	store := &AuthCodeStore{
 		entries: make(map[string]*AuthCodeEntry),
-		done:    make(chan struct{}),
 	}
 
 	// Add expired and fresh entries

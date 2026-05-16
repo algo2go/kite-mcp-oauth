@@ -173,9 +173,11 @@ func TestAuthCodeStore_ConcurrentAccess(t *testing.T) {
 
 func TestAuthCodeStore_Cleanup(t *testing.T) {
 	t.Parallel()
+	// done channel intentionally omitted — this test triggers cleanup
+	// inline without starting the goroutine, so the done channel is
+	// never consumed. Initializing it would be a dead write.
 	store := &AuthCodeStore{
 		entries: make(map[string]*AuthCodeEntry),
-		done:    make(chan struct{}),
 	}
 	// Don't start the cleanup goroutine — we'll trigger cleanup manually
 
